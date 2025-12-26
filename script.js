@@ -19,7 +19,7 @@ let zIndexCounter = 10;
 let currentLang = "en";
 let isInStandby = false;
 
-// ===== i18n (inglese / italiano) =====
+// ===== Traduzioni =====
 const i18n = {
   en: {
     win_notes_title: "Notes",
@@ -81,71 +81,6 @@ const i18n = {
     terminal_open_fail: "Unknown app:",
     terminal_lang_set: "Language set to",
     terminal_prompt_base: "user@namix"
-  },
-
-  it: {
-    win_notes_title: "Note",
-    win_browser_title: "Mini Browser",
-    win_files_title: "File",
-    win_music_title: "Player Musica",
-    win_terminal_title: "Terminale",
-    win_about_title: "Info sistema",
-    win_settings_title: "Impostazioni",
-    notes_placeholder: "Scrivi le tue note qui...",
-    browser_placeholder: "indirizzo finto… (non naviga davvero)",
-    browser_welcome:
-      "<h3>Benvenuto in NamixOS</h3><p>Questo è un sistema operativo web di demo, tutto nel browser.</p>",
-    about_content:
-      "<h2>NamixOS</h2><p>Mini sistema operativo web, eseguito totalmente lato client.</p><ul><li><strong>Finestre:</strong> drag, minimizza, schermo intero</li><li><strong>App:</strong> Note, Browser, File, Musica, Terminale, Info</li><li><strong>Mobile:</strong> fullscreen automatico, tap per aprire</li></ul>",
-    settings_theme_title: "Tema",
-    settings_theme_dark: "Tema scuro",
-    settings_theme_light: "Tema chiaro",
-    settings_language_title: "Lingua",
-    settings_mobile_note:
-      "Su telefono le finestre sono a schermo intero e si aprono con un singolo tap.",
-    dock_browser: "Browser",
-    dock_files: "File",
-    dock_terminal: "Terminale",
-    music_note:
-      "Questo è solo un player visivo (nessun audio reale).",
-    fm_quick_access: "Accesso rapido",
-    fm_home: "Home",
-    fm_documents: "Documenti",
-    fm_music: "Musica",
-    fm_path: "Percorso:",
-    power_title: "Alimentazione",
-    power_standby: "Standby",
-    power_reboot: "Riavvia il sistema",
-    confirm_standby: "Vuoi entrare in modalità standby?",
-    confirm_reboot: "Riavviare il sistema?",
-    standby_message:
-      "Namix è in standby. Tocca lo schermo per riattivare.",
-    icon: {
-      notes: "Note",
-      browser: "Browser",
-      files: "File",
-      music: "Musica",
-      terminal: "Terminale",
-      about: "Info OS"
-    },
-    terminal_welcome:
-      "Benvenuto nel terminale di NamixOS.\nScrivi 'help' per vedere i comandi disponibili.\n",
-    terminal_help:
-      "Comandi disponibili: help, about, clear, apps, ls, cd, open, lang, date",
-    terminal_about:
-      "NamixOS - sistema operativo web demo. Powered by SOLEN.",
-    terminal_unknown: "Comando non riconosciuto:",
-    terminal_apps:
-      "App: note, browser, file, musica, terminale, info, impostazioni",
-    terminal_ls_root: "home",
-    terminal_ls_home: "Documenti  Musica  todo.txt  ideas.txt",
-    terminal_ls_docs: "spec.md  note.txt",
-    terminal_ls_music: "brano1.mp3  brano2.mp3",
-    terminal_cd_ok: "Spostato in:",
-    terminal_cd_fail: "Directory inesistente:",
-    terminal_open_fail: "App sconosciuta:",
-    terminal_lang_set: "Lingua impostata su",
-    terminal_prompt_base: "utente@namix"
   }
 };
 
@@ -201,100 +136,14 @@ function playSplash(callback) {
     return;
   }
   splash.classList.add("visible");
+  splash.style.display = "flex";
   setTimeout(() => {
     splash.classList.remove("visible");
+    splash.style.display = "none";
     if (callback) callback();
   }, 2800);
 }
-
-// ===== Apertura / gestione finestre =====
-function openWindow(id) {
-  const win = document.getElementById(id);
-  if (!win) return;
-
-  if (!win.dataset.inited) {
-    const offsetX = 60 + Math.random() * 140;
-    const offsetY = 60 + Math.random() * 80;
-    win.style.left = offsetX + "px";
-    win.style.top = offsetY + "px";
-    win.dataset.inited = "1";
-  }
-
-  win.style.display = "block";
-  win.classList.remove("fullscreen");
-  if (window.innerWidth <= 700) {
-    win.classList.add("fullscreen");
-  }
-
-  win.style.animation = "none";
-  void win.offsetWidth;
-  win.style.animation = "";
-  focusWindow(win);
-  createOrActivateTaskbarItem(win);
-}
-
-function focusWindow(win) {
-  windows.forEach((w) => w.classList.remove("active"));
-  win.classList.add("active");
-  zIndexCounter += 1;
-  win.style.zIndex = zIndexCounter;
-}
-
-function closeWindow(win) {
-  win.style.display = "none";
-  const id = win.id;
-  const item = taskbar.querySelector(`[data-window="${id}"]`);
-  if (item) item.remove();
-}
-
-function minimizeWindow(win) {
-  win.style.display = "none";
-  const id = win.id;
-  const item = taskbar.querySelector(`[data-window="${id}"]`);
-  if (item) item.classList.remove("active");
-}
-
-function closeAllWindows() {
-  windows.forEach((win) => {
-    win.style.display = "none";
-  });
-  taskbar.innerHTML = "";
-}
-
-function createOrActivateTaskbarItem(win) {
-  const id = win.id;
-  let item = taskbar.querySelector(`[data-window="${id}"]`);
-
-  const dict = getDict();
-  const appKey = win.dataset.app;
-  const labelFromIcon =
-    dict.icon && dict.icon[appKey] ? dict.icon[appKey] : null;
-  const title =
-    labelFromIcon ||
-    win.querySelector(".window-title")?.textContent ||
-    "App";
-
-  if (!item) {
-    item = document.createElement("div");
-    item.className = "taskbar-item active";
-    item.dataset.window = id;
-    item.textContent = title;
-    item.addEventListener("click", () => {
-      if (win.style.display === "none" || win.style.display === "") {
-        win.style.display = "block";
-        focusWindow(win);
-        item.classList.add("active");
-      } else {
-        minimizeWindow(win);
-      }
-    });
-    taskbar.appendChild(item);
-  } else {
-    item.classList.add("active");
-  }
-}
-
-// Icone desktop
+// ===== Icone desktop e dock =====
 icons.forEach((icon) => {
   icon.addEventListener("dblclick", () => {
     const id = icon.dataset.window;
@@ -309,7 +158,6 @@ icons.forEach((icon) => {
   });
 });
 
-// Dock
 dockItems.forEach((btn) => {
   btn.addEventListener("click", () => {
     const id = btn.dataset.window;
@@ -317,16 +165,11 @@ dockItems.forEach((btn) => {
   });
 });
 
-// Start menu
+// ===== Start menu =====
 function toggleStartMenu() {
   const isOpen = startMenu.classList.contains("open");
-  if (isOpen) {
-    startMenu.classList.remove("open");
-    startButton.classList.remove("active");
-  } else {
-    startMenu.classList.add("open");
-    startButton.classList.add("active");
-  }
+  startMenu.classList.toggle("open", !isOpen);
+  startButton.classList.toggle("active", !isOpen);
 }
 
 startButton.addEventListener("click", (e) => {
@@ -350,7 +193,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Bottoni finestra + drag
+// ===== Bottoni finestra + drag =====
 windows.forEach((win) => {
   const btnClose = win.querySelector(".btn-close");
   const btnMin = win.querySelector(".btn-minimize");
@@ -423,7 +266,7 @@ windows.forEach((win) => {
   }
 });
 
-// Clock
+// ===== Clock =====
 function updateClock() {
   const now = new Date();
   const hh = String(now.getHours()).padStart(2, "0");
@@ -431,50 +274,35 @@ function updateClock() {
   clock.textContent = `${hh}:${mm}`;
 }
 updateClock();
-setInterval(updateClock, 30 * 1000);
+setInterval(updateClock, 30000);
 
-// Tema
-const themeButtons = document.querySelectorAll(".btn-theme");
-themeButtons.forEach((btn) => {
+// ===== Tema e lingua =====
+document.querySelectorAll(".btn-theme").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const theme = btn.dataset.theme;
-    if (theme === "dark") {
-      osRoot.classList.remove("light-theme");
-    } else if (theme === "light") {
-      osRoot.classList.add("light-theme");
-    }
+    osRoot.classList.toggle("light-theme", btn.dataset.theme === "light");
   });
 });
 
-// Lingua
-const langButtons = document.querySelectorAll(".btn-lang");
-langButtons.forEach((btn) => {
+document.querySelectorAll(".btn-lang").forEach((btn) => {
   btn.addEventListener("click", () => {
     const lang = btn.dataset.lang;
     if (lang && i18n[lang]) {
       currentLang = lang;
       applyTranslations();
-      terminalPrint(getDict().terminal_lang_set + " " + lang);
     }
   });
 });
-
-// ===== Mobile fullscreen auto =====
+// ===== Mobile fullscreen =====
 function mobileMode() {
-  if (window.innerWidth <= 700) {
-    windows.forEach((win) => {
-      if (win.style.display !== "none") {
-        win.classList.add("fullscreen");
-      }
-    });
-  } else {
-    windows.forEach((win) => {
-      win.classList.remove("fullscreen");
-    });
-  }
+  const isMobile = window.innerWidth <= 700;
+  windows.forEach((win) => {
+    if (win.style.display !== "none") {
+      win.classList.toggle("fullscreen", isMobile);
+    }
+  });
 }
-mobileMode();
 window.addEventListener("resize", mobileMode);
+mobileMode();
 
 // ===== Standby & Reboot =====
 function showBlackSequence(iconSymbol, duration = 3000, callback) {
@@ -482,13 +310,15 @@ function showBlackSequence(iconSymbol, duration = 3000, callback) {
     if (callback) callback();
     return;
   }
+
   blackIcon.textContent = iconSymbol;
+  blackScreen.style.display = "flex";
   blackScreen.classList.add("visible");
+
   setTimeout(() => {
     blackScreen.classList.remove("visible");
-    setTimeout(() => {
-      if (callback) callback();
-    }, 400);
+    blackScreen.style.display = "none";
+    if (callback) callback();
   }, duration);
 }
 
@@ -502,28 +332,31 @@ function enterStandby() {
   closeAllWindows();
 
   showBlackSequence("⏸", 3000, () => {
-    setTimeout(() => {
-      standbyOverlay.classList.add("visible");
-      isInStandby = true;
-    }, 0);
+    standbyOverlay.style.display = "flex";
+    standbyOverlay.classList.add("visible");
+    isInStandby = true;
   });
 }
 
 function wakeFromStandby() {
   if (!isInStandby) return;
   isInStandby = false;
+
   standbyOverlay.classList.remove("visible");
+  standbyOverlay.style.display = "none";
 
   showBlackSequence("⏸", 3000, () => {
     playSplash(() => {});
   });
 }
 
-standbyOverlay.addEventListener("click", wakeFromStandby);
-standbyOverlay.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  wakeFromStandby();
-});
+if (standbyOverlay) {
+  standbyOverlay.addEventListener("click", wakeFromStandby);
+  standbyOverlay.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    wakeFromStandby();
+  }, { passive: false });
+}
 
 function enterReboot() {
   const dict = getDict();
@@ -535,9 +368,7 @@ function enterReboot() {
   closeAllWindows();
 
   showBlackSequence("🔄", 3000, () => {
-    setTimeout(() => {
-      playSplash(() => {});
-    }, 3000);
+    playSplash(() => {});
   });
 }
 
@@ -551,5 +382,6 @@ startPowerButtons.forEach((btn) => {
 
 // ===== Init =====
 applyTranslations();
-renderFileManager();
+if (blackScreen) blackScreen.style.display = "none";
+if (standbyOverlay) standbyOverlay.style.display = "none";
 playSplash(() => {});
