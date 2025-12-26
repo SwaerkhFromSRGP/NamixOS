@@ -1,4 +1,3 @@
-// Splash screen
 function bootOS() {
   const splash = document.createElement("div");
   splash.id = "splash";
@@ -13,8 +12,6 @@ function bootOS() {
 
 window.addEventListener("load", bootOS);
 
-
-// Apertura app
 function openApp(appName) {
   const win = document.createElement("div");
   win.className = "window";
@@ -27,8 +24,6 @@ function openApp(appName) {
   loadApp(appName, win);
 }
 
-
-// Drag finestre
 document.addEventListener("mousedown", function(e) {
   if (!e.target.classList.contains("title")) return;
 
@@ -50,8 +45,6 @@ document.addEventListener("mousedown", function(e) {
   document.addEventListener("mouseup", stop);
 });
 
-
-// Icone desktop
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".icon").forEach(icon => {
     icon.addEventListener("click", () => {
