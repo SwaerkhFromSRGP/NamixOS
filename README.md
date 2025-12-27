@@ -2,8 +2,7 @@
 
 This is a beta of Namix, an operative
 system that runs lightly on your device.
-This was built for fun, don't expect to
-be good and functional.
+This was built for fun, don't expect it to be good and fully functional.
 
 Optionally downloadable apps will be 
 available in a future version,
