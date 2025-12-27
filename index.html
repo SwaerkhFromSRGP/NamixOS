@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NamixOS</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 
 <body>
@@ -16,7 +14,7 @@
     <div id="splash">
       <div class="splash-content">
         <div class="splash-title">NamixOS</div>
-        <div class="splash-powered">Powered by <span class="splash-engine">Namix</span></div>
+        <div class="splash-powered">Powered by <span class="splash-engine">SOLEN</span></div>
         <div class="splash-beta">BETA</div>
       </div>
     </div>
@@ -24,7 +22,7 @@
     <!-- Black overlay -->
     <div id="black-screen">
       <div class="black-content">
-        <div class="black-title">Namix</div>
+        <div class="black-title">NamixOS</div>
         <div class="black-icon" id="black-icon"></div>
       </div>
     </div>
@@ -32,50 +30,26 @@
     <!-- Standby -->
     <div id="standby-message">
       <div class="standby-text" id="standby-text">
-        Namix is in standby. Tap the screen to continue.
+        NamixOS is in standby. Tap to continue.
       </div>
     </div>
 
     <!-- Desktop -->
     <div id="desktop">
 
-      <div class="icon" data-window="win-notes">
-        <div class="icon-image">📝</div>
-        <div class="icon-label">Notes</div>
-      </div>
-
-      <div class="icon" data-window="win-browser">
-        <div class="icon-image">🌐</div>
-        <div class="icon-label">Browser</div>
-      </div>
-
-      <div class="icon" data-window="win-files">
-        <div class="icon-image">📁</div>
-        <div class="icon-label">Files</div>
-      </div>
-
-      <div class="icon" data-window="win-music">
-        <div class="icon-image">🎵</div>
-        <div class="icon-label">Music</div>
-      </div>
-
-      <div class="icon" data-window="win-terminal">
-        <div class="icon-image">>_</div>
-        <div class="icon-label">Terminal</div>
-      </div>
-
-      <div class="icon" data-window="win-about">
-        <div class="icon-image">📄</div>
-        <div class="icon-label">About</div>
-      </div>
+      <div class="icon" data-window="win-browser">🌐</div>
+      <div class="icon" data-window="win-files">📁</div>
+      <div class="icon" data-window="win-terminal">>_</div>
+      <div class="icon" data-window="win-music">🎵</div>
+      <div class="icon" data-window="win-notes">📝</div>
 
     </div>
 
     <!-- Dock -->
     <div id="dock">
-      <button class="dock-item" data-window="win-browser">🌐 Browser</button>
-      <button class="dock-item" data-window="win-files">📁 Files</button>
-      <button class="dock-item" data-window="win-terminal">>_ Terminal</button>
+      <button class="dock-item" data-window="win-browser">🌐</button>
+      <button class="dock-item" data-window="win-files">📁</button>
+      <button class="dock-item" data-window="win-terminal">>_</button>
     </div>
 
     <!-- Taskbar -->
@@ -90,12 +64,11 @@
       <div class="start-title">NamixOS</div>
 
       <div class="start-apps">
-        <button class="start-app" data-window="win-notes">📝 Notes</button>
-        <button class="start-app" data-window="win-browser">🌐 Browser</button>
-        <button class="start-app" data-window="win-files">📁 Files</button>
-        <button class="start-app" data-window="win-music">🎵 Music</button>
-        <button class="start-app" data-window="win-terminal">>_ Terminal</button>
-        <button class="start-app" data-window="win-about">📄 About</button>
+        <button class="start-app" data-window="win-browser">🌐</button>
+        <button class="start-app" data-window="win-files">📁</button>
+        <button class="start-app" data-window="win-terminal">>_</button>
+        <button class="start-app" data-window="win-music">🎵</button>
+        <button class="start-app" data-window="win-notes">📝</button>
       </div>
 
       <div class="start-power-section">
@@ -108,7 +81,7 @@
     <!-- WINDOWS -->
 
     <!-- Notes -->
-    <div class="window" id="win-notes" data-app="notes">
+    <div class="window" id="win-notes">
       <div class="window-titlebar">
         <span class="window-title">Notes</span>
         <div class="window-buttons">
@@ -123,7 +96,7 @@
     </div>
 
     <!-- Browser -->
-    <div class="window" id="win-browser" data-app="browser">
+    <div class="window" id="win-browser">
       <div class="window-titlebar">
         <span class="window-title">Mini Browser</span>
         <div class="window-buttons">
@@ -142,7 +115,7 @@
     </div>
 
     <!-- Files -->
-    <div class="window" id="win-files" data-app="files">
+    <div class="window" id="win-files">
       <div class="window-titlebar">
         <span class="window-title">Files</span>
         <div class="window-buttons">
@@ -168,7 +141,7 @@
     </div>
 
     <!-- Music -->
-    <div class="window" id="win-music" data-app="music">
+    <div class="window" id="win-music">
       <div class="window-titlebar">
         <span class="window-title">Music Player</span>
         <div class="window-buttons">
@@ -205,7 +178,7 @@
     </div>
 
     <!-- Terminal -->
-    <div class="window" id="win-terminal" data-app="terminal">
+    <div class="window" id="win-terminal">
       <div class="window-titlebar">
         <span class="window-title">Terminal</span>
         <div class="window-buttons">
@@ -217,36 +190,14 @@
       <div class="window-content terminal">
         <div class="terminal-output" id="terminal-output"></div>
         <div class="terminal-input-row">
-          <span class="prompt" id="terminal-prompt">$</span>
+          <span class="prompt">$</span>
           <input type="text" class="terminal-input" />
         </div>
       </div>
     </div>
 
-    <!-- About -->
-    <div class="window" id="win-about" data-app="about">
-      <div class="window-titlebar">
-        <span class="window-title">About</span>
-        <div class="window-buttons">
-          <button class="btn-minimize">_</button>
-          <button class="btn-fullscreen">□</button>
-          <button class="btn-close">×</button>
-        </div>
-      </div>
-      <div class="window-content about">
-        <h2>NamixOS</h2>
-        <p>Mini web operating system.</p>
-        <ul>
-          <li>Windows</li>
-          <li>Apps</li>
-          <li>Mobile support</li>
-        </ul>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Scripts -->
   <script src="apps.js" defer></script>
   <script src="script.js" defer></script>
 
